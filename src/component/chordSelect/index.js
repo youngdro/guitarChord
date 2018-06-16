@@ -96,7 +96,7 @@ class ChordSelect extends Component {
 		this.touchMove(index, e.pageX);
 	}
 	mouseLeave(index, e) {
-		if (this.isMobile()) return;
+		if (this.isMobile() || !this.isMouseDown) return;
 		this.isMouseDown = false;
 		this.touchEnd(index);
 	}
