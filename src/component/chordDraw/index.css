@@ -1,0 +1,19 @@
+.container-chordDraw{
+	padding-bottom:20px;
+}
+.container-chordDraw .draw-info{
+	opacity: 0;
+	line-height: 0px;
+	font-size: 15px;
+	padding: 0 20px;
+	color: #aaa;
+	text-align: center;
+	-webkit-transition: 0.3s ease;
+	-ms-transition: 0.3s ease;
+	transition: 0.3s ease;
+}
+.container-chordDraw .draw-info.show{
+	opacity: 1;
+	line-height: 25px;
+	margin-bottom: 10px;
+}

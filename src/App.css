@@ -1,28 +1,71 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.chord-svg{
+  width: 200px;
+  height: 220px;
 }
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.chord-rect{
+  rx:5;
+  ry:5;
+  width: 100px;
+  height: 100px;
+  fill:none;
+  stroke:#666;
+  stroke-width:2;
 }
-
-.App-title {
-  font-size: 1.5em;
+.chord-gird{
+  stroke: #666;
+  stroke-width: 2;
+  fill: none;
 }
-
-.App-intro {
-  font-size: large;
+.chord-forbidden,.chord-blank-circle{
+  stroke: #666;
+  stroke-width: 1;
+  fill: none;
+}
+.chord-block-circle{
+  fill: #333;
+}
+.chord-barre{
+  height: 16px;
+  rx:8;
+  ry:8;
+  fill:#333;
+}
+.chord-barre-fret{
+  fill:#333;
+  font-size: 14px;
+  font-weight: 700;
+}
+.chord-string-key{
+  fill:#333;
+  font-size: 10px;
+  font-weight: 700;
+}
+.chord-name{
+  fill:#333;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+  .chord-svg{
+    width: 140px;
+    height: 155px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .chord-svg{
+    width: 120px;
+    height: 135px;
+  }
 }

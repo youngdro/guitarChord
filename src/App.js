@@ -1,21 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {
+	Component
+} from 'react';
 import './App.css';
+import ChordSelect from './component/chordSelect';
+import ChordDraw from './component/chordDraw';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+
+		}
+	}
+	hideLoading() {
+		this.refs.chordSelect.hideLoading();
+	}
+	selectFinish(chordTone) {
+		this.refs.chordDraw.draw(chordTone);
+	}
+	render() {
+		return (
+			<div className="App">
+				<ChordSelect ref="chordSelect" selectFinish={this.selectFinish.bind(this)}/>
+				<ChordDraw ref="chordDraw" hideLoading={this.hideLoading.bind(this)}/>
+			</div>
+		);
+	}
 }
 
 export default App;
