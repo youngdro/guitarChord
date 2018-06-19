@@ -497,7 +497,7 @@ class ChordSvg {
 	// 创建use标签
 	createUse(href, x, y) {
 		return this.createSVG('use', {
-			href: href,
+			svgHref: href,
 			x: x,
 			y: y
 		});
@@ -523,7 +523,9 @@ class ChordSvg {
 				className: 'chord-barre',
 				width: stringTo * 20,
 				x: 15 + 20 * (6 - stringTo),
-				y: 27 + 20 * fret
+				y: 27 + 20 * fret,
+				rx: 8,
+				ry: 8
 			}));
 		}
 	}
@@ -573,7 +575,9 @@ class ChordSvg {
 		this.chordRect = this.createSVG('rect', {
 			className: 'chord-rect',
 			x: 25,
-			y: 45
+			y: 45,
+			rx: 5,
+			ry: 5
 		});
 		// 和弦网格，代表弦和品
 		this.chordGird = this.createSVG('path', {
@@ -592,7 +596,8 @@ class ChordSvg {
 		}));
 		// 空弦弹奏的空心圈标志
 		this.g_blank_circle = this.createSVG('g', {
-			id: 'blank_circle'
+			id: 'blank_circle',
+
 		});
 		this.g_blank_circle.appendChild(this.createSVG('circle', {
 			className: 'chord-blank-circle',

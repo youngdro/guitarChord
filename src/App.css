@@ -6,8 +6,6 @@
   height: 220px;
 }
 .chord-rect{
-  rx:5;
-  ry:5;
   width: 100px;
   height: 100px;
   fill:none;
@@ -29,8 +27,6 @@
 }
 .chord-barre{
   height: 16px;
-  rx:8;
-  ry:8;
   fill:#333;
 }
 .chord-barre-fret{
