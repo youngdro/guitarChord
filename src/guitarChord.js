@@ -1,3 +1,4 @@
+// 检测数据类型的公用方法
 function is(data) {
 	return function(type) {
 		return Object.prototype.toString.call(data) === `[object ${type}]`;
@@ -9,17 +10,18 @@ class Tone {
 	constructor(toneString = '1', string, fret) {
 		this.syllableMap = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si']; // 所有唱名数组
 		this.keyMap = ['1', ['#1', 'b2'], '2', ['#2', 'b3'], '3', '4', ['#4', 'b5'], '5', ['#5', 'b6'], '6', ['#6', 'b7'], '7']; // 音程
-		this.intervalMap = ['C', ['#C', 'bD'], 'D', ['#D', 'bE'], 'E', 'F', ['#F', 'bG'], 'G', ['#G', 'bA'], 'A', ['#A', 'bB'], 'B'];
-		this.toneString = toneString;
-		this.toneNormal = toneString.replace(/\./g, '');
+		this.intervalMap = ['C', ['#C', 'bD'], 'D', ['#D', 'bE'], 'E', 'F', ['#F', 'bG'], 'G', ['#G', 'bA'], 'A', ['#A', 'bB'], 'B']; //所有调名
+		this.toneString = toneString; // 单音的字符串表示
+		this.toneNormal = toneString.replace(/\./g, ''); // 单音的字符串表示（去除八度标记）
 		this.key = toneString.replace(/\.|b|#/g, ''); // 数字音
 		this.syllableName = this.syllableMap[+this.key - 1]; // 唱名
-		this.flat = toneString.match('b') ? 'b' : ''; // 降半调
-		this.sharp = toneString.match('#') ? '#' : ''; // 升半调
+		this.flat = toneString.match('b') ? 'b' : ''; // 降半调标记
+		this.sharp = toneString.match('#') ? '#' : ''; // 升半调标记
 		let octave_arr = toneString.split(this.key);
 		let octave_flat = octave_arr[0].toString().match(/\./g);
 		let octave_sharp = octave_arr[1].toString().match(/\./g);
-		this.octave = (octave_sharp ? octave_sharp.length : 0) - (octave_flat ? octave_flat.length : 0); // 八度间隔数
+		this.octave = (octave_sharp ? octave_sharp.length : 0) - (octave_flat ? octave_flat.length : 0); // 八度度数
+		// 吉他按弦位置
 		this.position = {
 			string: string, // 第几弦
 			fret: fret // 第几品格
@@ -99,7 +101,13 @@ class GuitarChord {
 			}
 		}
 	}
-	// 在指定的品格数范围内，查找某个音在某根弦的音域下的品格位置
+	// 在指定的品格数范围内，查找某个音在某根弦的音域下所有的品格位置
+	/*
+	 * @param key 搜寻的音（字符串形式）
+	 * @param toneArray 音域数组，即某根弦上所有单音类按顺序组成的数组
+	 * @param fretStart 搜寻的最低品格数
+	 * @param fretEnd 搜寻的最高品格数
+	 */
 	findFret(key, toneArray, fretStart, fretEnd) {
 		key = key.replace(/\./g, '');
 		let fretArray = [];
@@ -226,7 +234,7 @@ class GuitarChord {
 		return [...nextResult].map(item => JSON.parse(item));
 	}
 	// 和弦指法过滤器
-	filter(positionSave, fretStart) {
+	filter(positionSave) {
 		// 从6弦开始回溯记录的和弦指法结果，拆解出所有指法组合
 		let allResult = positionSave.filter((item) => {
 			return item.string === this.initialTone.length
@@ -252,7 +260,6 @@ class GuitarChord {
 		} else {
 			return [];
 		}
-
 	}
 	// 和弦指法计算入口
 	chord() {
@@ -293,7 +300,7 @@ class GuitarChord {
 				// 从1弦开始启动递归计算
 				if (this.calc(1, null, fretStart, fretEnd, null, positionSave)) {
 					// 单次结果过滤并保存
-					this.chordResult.push(...this.filter(positionSave, fretStart));
+					this.chordResult.push(...this.filter(positionSave));
 				}
 			}
 		}
@@ -390,7 +397,7 @@ class ChordName {
 		if (chordTone.length < 4) return false;
 		return this.isAugmentedChord(chordTone) && this.isMinorThird(chordTone[2], chordTone[3]);
 	}
-	// 获取音对应的调名
+	// 获取音对应的根音和弦名
 	getKeyName(key) {
 		let keyName = this.toneUtil.intervalMap[this.toneUtil.findKeyIndex(key)];
 		if (is(keyName)('Array')) {
@@ -506,7 +513,7 @@ class ChordSvg {
 	setForbidden(svg, string = 6) {
 		svg.appendChild(this.createUse('#forbidden', 25 + 20 * (6 - string), 30));
 	}
-	// 设置空弦弹奏的空心圈位置， 位于几弦
+	// 设置空弦弹奏的空心圈位置，位于几弦
 	setOpen(svg, string = 6) {
 		svg.appendChild(this.createUse('#blank_circle', 25 + 20 * (6 - string), 30));
 	}
@@ -625,6 +632,11 @@ class ChordSvg {
 		this.svg.appendChild(this.defs);
 	}
 	// 绘制和弦svg图案
+	/*
+	 * @param chordTone 和弦组成音数组
+	 * @param chord 和弦指法结果
+	 * @param target svg指法图dom容器
+	 */
 	drawChord(chordTone, chord, target) {
 		let svg = this.svg.cloneNode(true);
 		let fretArr = chord.map(item => item.fret).filter(fret => (fret != null));
