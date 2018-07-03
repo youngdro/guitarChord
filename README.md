@@ -4,6 +4,8 @@
 
 核心算法及绘图位于 `src/guitarChord.js`
 
+简单使用`create-react-app`搭建。
+
 本地启动项目：
 ```js
 npm start
