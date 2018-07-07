@@ -12,6 +12,7 @@
 
 本地启动项目：
 ```js
+// npm install
 npm start
 ```
 静态项目打包：
